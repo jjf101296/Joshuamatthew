@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { MapPin, Calendar, Phone, Clock, Cake, Gift, Star, Sparkles } from "lucide-react"
+import { MapPin, Calendar, Phone, Clock, Cake, Gift, Star, Sparkles, Heart, PartyPopper } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { motion } from "framer-motion"
 
@@ -16,8 +16,8 @@ export default function BirthdayInvitation() {
     isPastEvent: false,
   })
 
-  // Event date
-  const eventDate = new Date("June 26, 2025 19:00:00").getTime()
+  // Event date - updated to 6:30 PM
+  const eventDate = new Date("June 26, 2025 18:30:00").getTime()
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -72,7 +72,7 @@ export default function BirthdayInvitation() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 overflow-hidden relative">
-      {/* Decorative elements */}
+      {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Colorful circles */}
         {[...Array(20)].map((_, i) => (
@@ -108,6 +108,49 @@ export default function BirthdayInvitation() {
             }}
           />
         ))}
+
+        {/* Balloons */}
+        {[...Array(12)].map((_, i) => (
+          <div
+            key={`balloon-${i}`}
+            className="absolute animate-float-balloon"
+            style={{
+              left: `${Math.random() * 100}%`,
+              bottom: `-20%`,
+              animationDelay: `${Math.random() * 10}s`,
+              animationDuration: `${15 + Math.random() * 20}s`,
+            }}
+          >
+            <div
+              className="w-16 h-20 rounded-full relative"
+              style={{
+                backgroundColor: `hsl(${Math.random() * 360}, 90%, 65%)`,
+                boxShadow: "inset -5px -5px 10px rgba(0,0,0,0.1), inset 5px 5px 10px rgba(255,255,255,0.2)",
+              }}
+            >
+              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-12 bg-white/30"></div>
+            </div>
+          </div>
+        ))}
+
+        {/* Sparkles */}
+        {[...Array(30)].map((_, i) => (
+          <div
+            key={`sparkle-${i}`}
+            className="absolute animate-twinkle"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              width: `${2 + Math.random() * 4}px`,
+              height: `${2 + Math.random() * 4}px`,
+              backgroundColor: "white",
+              borderRadius: "50%",
+              boxShadow: "0 0 8px 2px rgba(255, 255, 255, 0.8)",
+              animationDelay: `${Math.random() * 5}s`,
+              animationDuration: `${1 + Math.random() * 3}s`,
+            }}
+          />
+        ))}
       </div>
 
       {/* Content with glassmorphism effect */}
@@ -130,6 +173,12 @@ export default function BirthdayInvitation() {
               </h2>
               <div className="absolute -top-4 -left-6 text-cyan-300 animate-bounce">
                 <Cake size={40} />
+              </div>
+              <div
+                className="absolute -bottom-4 -right-6 text-pink-300 animate-bounce"
+                style={{ animationDelay: "0.5s" }}
+              >
+                <PartyPopper size={40} />
               </div>
             </div>
 
@@ -171,17 +220,19 @@ export default function BirthdayInvitation() {
                     transform: "translate(-50%, -50%)",
                   }}
                 >
-                  {i % 2 === 0 ? (
+                  {i % 3 === 0 ? (
                     <Star className="text-yellow-300 animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
-                  ) : (
+                  ) : i % 3 === 1 ? (
                     <Gift className="text-cyan-300 animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
+                  ) : (
+                    <Heart className="text-pink-300 animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
                   )}
                 </div>
               ))}
             </div>
           </motion.div>
 
-          {/* Countdown Timer with enhanced styling - Improved for mobile */}
+          {/* Countdown Timer - Redesigned as a single line */}
           <motion.div variants={itemVariants}>
             <div className="text-center mb-6">
               <h3 className="text-xl sm:text-2xl font-bold text-white flex items-center justify-center gap-2 drop-shadow-md">
@@ -196,26 +247,47 @@ export default function BirthdayInvitation() {
                 <p className="text-xl text-white/90 mt-2">We can&apos;t wait to celebrate with you!</p>
               </div>
             ) : (
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 md:gap-4 text-center">
-                {[
-                  { label: "Days", value: timeLeft.days },
-                  { label: "Hours", value: timeLeft.hours },
-                  { label: "Minutes", value: timeLeft.minutes },
-                  { label: "Seconds", value: timeLeft.seconds },
-                ].map((item) => (
-                  <Card
-                    key={item.label}
-                    className="bg-white/20 backdrop-blur-md border-white/30 overflow-hidden relative"
-                  >
-                    <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20"></div>
-                    <CardContent className="p-3 sm:p-6 relative z-10">
-                      <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-white drop-shadow-md">
-                        {item.value}
+              <div className="relative">
+                {/* Decorative background for countdown */}
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-600/40 via-pink-500/40 to-yellow-500/40 rounded-xl blur-md transform -rotate-1"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/30 via-pink-500/30 to-purple-600/30 rounded-xl blur-md transform rotate-1"></div>
+
+                {/* Countdown display */}
+                <div className="relative bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/30 shadow-xl overflow-hidden">
+                  <div className="flex justify-center items-center space-x-1 sm:space-x-3 text-center">
+                    {[
+                      { label: "D", value: timeLeft.days },
+                      { label: "H", value: timeLeft.hours },
+                      { label: "M", value: timeLeft.minutes },
+                      { label: "S", value: timeLeft.seconds },
+                    ].map((item, index) => (
+                      <div key={item.label} className="flex items-center">
+                        <div className="flex flex-col items-center">
+                          <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-white drop-shadow-md">
+                            {String(item.value).padStart(2, "0")}
+                          </div>
+                          <div className="text-white/90 font-medium text-xs sm:text-sm">{item.label}</div>
+                        </div>
+                        {index < 3 && (
+                          <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-yellow-300 mx-1 sm:mx-2">
+                            :
+                          </div>
+                        )}
                       </div>
-                      <div className="text-white/90 font-medium mt-1 sm:mt-2 text-sm sm:text-base">{item.label}</div>
-                    </CardContent>
-                  </Card>
-                ))}
+                    ))}
+                  </div>
+
+                  {/* Animated progress bar */}
+                  <div className="w-full h-1 bg-white/20 mt-3 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-500 rounded-full"
+                      style={{
+                        width: `${100 - (timeLeft.seconds / 60) * 100}%`,
+                        transition: "width 1s linear",
+                      }}
+                    ></div>
+                  </div>
+                </div>
               </div>
             )}
           </motion.div>
@@ -229,7 +301,7 @@ export default function BirthdayInvitation() {
                   <Calendar className="text-yellow-300 h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0 animate-pulse" />
                   <div>
                     <h3 className="text-xl sm:text-2xl font-bold text-white drop-shadow-md">Date & Time</h3>
-                    <p className="text-white/90 mt-1 text-base sm:text-lg">June 26th, 2025 at 7:00 PM</p>
+                    <p className="text-white/90 mt-1 text-base sm:text-lg">June 26th, 2025 at 6:30 PM</p>
                   </div>
                 </div>
               </CardContent>

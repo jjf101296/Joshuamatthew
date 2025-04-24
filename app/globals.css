@@ -35,6 +35,22 @@ body {
   animation: float 6s ease-in-out infinite;
 }
 
+@keyframes float-balloon {
+  0% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-100vh) rotate(5deg);
+  }
+  100% {
+    transform: translateY(-200vh) rotate(-5deg);
+  }
+}
+
+.animate-float-balloon {
+  animation: float-balloon 30s linear infinite;
+}
+
 @keyframes confetti {
   0% {
     transform: translateY(0) rotate(0deg);
@@ -74,4 +90,20 @@ body {
 
 .animate-reverse-spin {
   animation: reverse-spin 15s linear infinite;
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+.animate-twinkle {
+  animation: twinkle 2s ease-in-out infinite;
 }
