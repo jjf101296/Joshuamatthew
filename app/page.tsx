@@ -1,9 +1,22 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { MapPin, Calendar, Phone, Clock, Cake, Gift, Star, Sparkles, Heart, PartyPopper } from "lucide-react"
+import {
+  MapPin,
+  Calendar,
+  Phone,
+  Clock,
+  Cake,
+  Gift,
+  Star,
+  Sparkles,
+  Heart,
+  PartyPopper,
+  Music,
+  VolumeX,
+} from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { motion } from "framer-motion"
 
@@ -15,6 +28,8 @@ export default function BirthdayInvitation() {
     seconds: 0,
     isPastEvent: false,
   })
+  const [isMuted, setIsMuted] = useState(false)
+  const audioRef = useRef<HTMLAudioElement>(null)
 
   // Event date - updated to 6:30 PM
   const eventDate = new Date("June 26, 2025 18:30:00").getTime()
@@ -49,6 +64,14 @@ export default function BirthdayInvitation() {
     return () => clearInterval(timer)
   }, [])
 
+  // Handle audio mute/unmute
+  const toggleMute = () => {
+    if (audioRef.current) {
+      audioRef.current.muted = !audioRef.current.muted
+      setIsMuted(!isMuted)
+    }
+  }
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -72,6 +95,21 @@ export default function BirthdayInvitation() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 overflow-hidden relative">
+      {/* Background Music */}
+      <audio ref={audioRef} autoPlay loop className="hidden">
+        <source src="/happy-birthday.mp3" type="audio/mpeg" />
+        Your browser does not support the audio element.
+      </audio>
+
+      {/* Music Control Button */}
+      <button
+        onClick={toggleMute}
+        className="fixed top-4 right-4 z-50 bg-white/20 backdrop-blur-md p-3 rounded-full shadow-lg hover:bg-white/30 transition-colors duration-300"
+        aria-label={isMuted ? "Unmute music" : "Mute music"}
+      >
+        {isMuted ? <VolumeX className="text-white h-6 w-6" /> : <Music className="text-white h-6 w-6 animate-pulse" />}
+      </button>
+
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         {/* Colorful circles */}
@@ -190,7 +228,7 @@ export default function BirthdayInvitation() {
             </div>
           </motion.div>
 
-          {/* Baby Image with styled frame */}
+          {/* Baby Image with styled frame and simplified graphics */}
           <motion.div className="flex justify-center" variants={itemVariants}>
             <div className="relative">
               {/* Decorative frame */}
@@ -199,7 +237,34 @@ export default function BirthdayInvitation() {
 
               {/* Image container */}
               <div className="relative w-64 h-64 sm:w-72 sm:h-72 md:w-96 md:h-96 rounded-full overflow-hidden border-4 border-white shadow-2xl z-10">
+                {/* Overlay graphics - keeping only the gradient */}
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-pink-500/30 z-10"></div>
+
+                {/* Sparkle effects - keeping these as requested */}
+                {[...Array(8)].map((_, i) => (
+                  <div
+                    key={`photo-sparkle-${i}`}
+                    className="absolute z-20 animate-twinkle"
+                    style={{
+                      left: `${10 + Math.random() * 80}%`,
+                      top: `${10 + Math.random() * 80}%`,
+                      width: `${4 + Math.random() * 6}px`,
+                      height: `${4 + Math.random() * 6}px`,
+                      backgroundColor: "white",
+                      borderRadius: "50%",
+                      boxShadow: "0 0 10px 4px rgba(255, 255, 255, 0.8)",
+                      animationDelay: `${Math.random() * 3}s`,
+                    }}
+                  />
+                ))}
+
+                {/* Birthday text overlay - keeping this as requested */}
+                <div className="absolute bottom-6 left-0 right-0 text-center z-20">
+                  <div className="inline-block bg-gradient-to-r from-yellow-500/70 to-pink-500/70 backdrop-blur-sm px-4 py-1 rounded-full">
+                    <p className="text-white font-bold text-sm">Happy Birthday!</p>
+                  </div>
+                </div>
+
                 <Image
                   src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/WhatsApp%20Image%202025-03-25%20at%202.45.34%20PM.jpg-TgFqxj276YbElOysS3ZTN4yRcTRIK2.jpeg"
                   alt="Joshua Matthew"
