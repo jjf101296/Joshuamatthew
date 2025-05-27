@@ -1,377 +1,382 @@
 "use client"
 
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
+import { useState, useEffect } from "react"
+import Image from "next/image"
 import Link from "next/link"
-import { Search, FileCheck, Map, StampIcon as Passport, FileText, Plane, ArrowRight } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Coffee, Copy } from "lucide-react"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
-import { useState } from "react"
+import { MapPin, Calendar, Phone, Clock, Cake, Gift, Star, Sparkles, Heart, PartyPopper } from "lucide-react"
+import { Card, CardContent } from "@/components/ui/card"
+import { motion } from "framer-motion"
 
-export default function Home() {
-  const [copiedText, setCopiedText] = useState("")
+export default function BirthdayInvitation() {
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+    isPastEvent: false,
+  })
 
-  const copyToClipboard = async (text: string) => {
-    try {
-      await navigator.clipboard.writeText(text)
-      setCopiedText(text)
-      setTimeout(() => setCopiedText(""), 2000)
-    } catch (err) {
-      console.error("Failed to copy text: ", err)
-    }
+  // Event date - updated to 6:30 PM
+  const eventDate = new Date("June 26, 2025 18:30:00").getTime()
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const now = new Date().getTime()
+      const distance = eventDate - now
+
+      if (distance < 0) {
+        clearInterval(timer)
+        setTimeLeft({
+          days: 0,
+          hours: 0,
+          minutes: 0,
+          seconds: 0,
+          isPastEvent: true,
+        })
+      } else {
+        setTimeLeft({
+          days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+          hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+          minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+          seconds: Math.floor((distance % (1000 * 60)) / 1000),
+          isPastEvent: false,
+        })
+      }
+    }, 1000)
+
+    return () => clearInterval(timer)
+  }, [eventDate])
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.3,
+      },
+    },
+  }
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+      },
+    },
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-slate-50 to-white">
-      <Header />
+    <div className="min-h-screen bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 overflow-hidden relative">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Colorful circles */}
+        {Array.from({ length: 20 }, (_, i) => (
+          <div
+            key={`circle-${i}`}
+            className="absolute rounded-full mix-blend-screen animate-float opacity-70"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              width: `${30 + Math.random() * 100}px`,
+              height: `${30 + Math.random() * 100}px`,
+              backgroundColor: `hsl(${Math.random() * 360}, 80%, 70%)`,
+              animationDelay: `${Math.random() * 5}s`,
+              animationDuration: `${10 + Math.random() * 20}s`,
+            }}
+          />
+        ))}
 
-      <main className="flex-grow">
-        <div className="container mx-auto px-4 py-12">
-          <div className="text-center mb-16">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
-              <span className="text-black">Welcome to</span>
-              <br />
-              <span className="text-blue-600">Recruiter Support Platform</span>
-            </h1>
-            <h2 className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto">
-              A comprehensive suite of tools designed to help recruiters find the right candidates faster.
-            </h2>
-            <div className="mt-6">
-              <p className="text-gray-500">
-                Created by{" "}
-                <Link
-                  href="https://www.linkedin.com/in/john-francis-eeemba/"
-                  target="_blank"
-                  className="text-blue-600 hover:text-blue-800 font-medium"
-                >
-                  John Francis
-                </Link>
-                <span className="block text-sm mt-1">
-                  Human Resource Specialist | Public Speaker | Social Worker | Influencer | Talent Acquisition &
-                  Relationship Builder
-                </span>
-              </p>
+        {/* Confetti */}
+        {Array.from({ length: 60 }, (_, i) => (
+          <div
+            key={`confetti-${i}`}
+            className="absolute animate-confetti"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `-5%`,
+              width: `${5 + Math.random() * 10}px`,
+              height: `${5 + Math.random() * 15}px`,
+              backgroundColor: `hsl(${Math.random() * 360}, 90%, 70%)`,
+              transform: `rotate(${Math.random() * 360}deg)`,
+              animationDelay: `${Math.random() * 5}s`,
+              animationDuration: `${5 + Math.random() * 10}s`,
+            }}
+          />
+        ))}
+
+        {/* Balloons */}
+        {Array.from({ length: 12 }, (_, i) => (
+          <div
+            key={`balloon-${i}`}
+            className="absolute animate-float-balloon"
+            style={{
+              left: `${Math.random() * 100}%`,
+              bottom: `-20%`,
+              animationDelay: `${Math.random() * 10}s`,
+              animationDuration: `${15 + Math.random() * 20}s`,
+            }}
+          >
+            <div
+              className="w-16 h-20 rounded-full relative"
+              style={{
+                backgroundColor: `hsl(${Math.random() * 360}, 90%, 65%)`,
+                boxShadow: "inset -5px -5px 10px rgba(0,0,0,0.1), inset 5px 5px 10px rgba(255,255,255,0.2)",
+              }}
+            >
+              <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-1 h-12 bg-white/30"></div>
             </div>
           </div>
+        ))}
 
-          <div className="mb-16">
-            <h3 className="text-2xl font-bold text-center mb-10 text-indigo-600">Available Tools</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              <Card className="overflow-hidden hover:shadow-xl transition-all duration-500 border-t-4 border-blue-500 h-full">
-                <CardHeader className="bg-gradient-to-r from-blue-50 to-blue-100">
-                  <CardTitle className="flex items-center gap-2 text-blue-700">
-                    <Search className="h-5 w-5" />
-                    AI Boolean Search Generator
-                  </CardTitle>
-                  <CardDescription>Create optimized search strings for candidate sourcing</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-6 flex-grow">
-                  <ul className="space-y-2">
-                    <li className="flex items-start gap-2">
-                      <span className="text-blue-500 mt-1">•</span>
-                      <span>Extract key skills, technologies, and concepts from job descriptions</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-blue-500 mt-1">•</span>
-                      <span>Generate Boolean strings with proper operators</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-blue-500 mt-1">•</span>
-                      <span>Add synonyms and related terms automatically</span>
-                    </li>
-                  </ul>
-                </CardContent>
-                <CardFooter className="pt-0">
-                  <Button
-                    asChild
-                    className="w-full bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-700 hover:to-blue-600 group"
-                  >
-                    <Link href="/boolean-search" className="flex items-center justify-center gap-2">
-                      Access Tool <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </Button>
-                </CardFooter>
-              </Card>
+        {/* Sparkles */}
+        {Array.from({ length: 30 }, (_, i) => (
+          <div
+            key={`sparkle-${i}`}
+            className="absolute animate-twinkle"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              width: `${2 + Math.random() * 4}px`,
+              height: `${2 + Math.random() * 4}px`,
+              backgroundColor: "white",
+              borderRadius: "50%",
+              boxShadow: "0 0 8px 2px rgba(255, 255, 255, 0.8)",
+              animationDelay: `${Math.random() * 5}s`,
+              animationDuration: `${1 + Math.random() * 3}s`,
+            }}
+          />
+        ))}
+      </div>
 
-              <Card className="overflow-hidden hover:shadow-xl transition-all duration-500 border-t-4 border-green-500 h-full">
-                <CardHeader className="bg-gradient-to-r from-green-50 to-green-100">
-                  <CardTitle className="flex items-center gap-2 text-green-700">
-                    <FileCheck className="h-5 w-5" />
-                    AI ATS Checker
-                  </CardTitle>
-                  <CardDescription>Optimize resumes for Applicant Tracking Systems</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-6 flex-grow">
-                  <ul className="space-y-2">
-                    <li className="flex items-start gap-2">
-                      <span className="text-green-500 mt-1">•</span>
-                      <span>Compare resumes against job descriptions</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-green-500 mt-1">•</span>
-                      <span>Highlight matching and missing keywords</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-green-500 mt-1">•</span>
-                      <span>Get AI suggestions for resume improvements</span>
-                    </li>
-                  </ul>
-                </CardContent>
-                <CardFooter className="pt-0">
-                  <Button
-                    asChild
-                    className="w-full bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 group"
-                  >
-                    <Link href="/ats-checker" className="flex items-center justify-center gap-2">
-                      Access Tool <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </Button>
-                </CardFooter>
-              </Card>
-
-              <Card className="overflow-hidden hover:shadow-xl transition-all duration-500 border-t-4 border-purple-500 h-full">
-                <CardHeader className="bg-gradient-to-r from-purple-50 to-purple-100">
-                  <CardTitle className="flex items-center gap-2 text-purple-700">
-                    <Map className="h-5 w-5" />
-                    USA Map
-                  </CardTitle>
-                  <CardDescription>Interactive map of all 50 US states by time zone</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-6 flex-grow">
-                  <ul className="space-y-2">
-                    <li className="flex items-start gap-2">
-                      <span className="text-purple-500 mt-1">•</span>
-                      <span>View states organized by time zone</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-purple-500 mt-1">•</span>
-                      <span>Access detailed state information</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-purple-500 mt-1">•</span>
-                      <span>Learn about major companies and industries</span>
-                    </li>
-                  </ul>
-                </CardContent>
-                <CardFooter className="pt-0">
-                  <Button
-                    asChild
-                    className="w-full bg-gradient-to-r from-purple-600 to-purple-500 hover:from-purple-700 hover:to-purple-600 group"
-                  >
-                    <Link href="/us-map" className="flex items-center justify-center gap-2">
-                      Access Tool <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </Button>
-                </CardFooter>
-              </Card>
-
-              <Card className="overflow-hidden hover:shadow-xl transition-all duration-500 border-t-4 border-amber-500 h-full">
-                <CardHeader className="bg-gradient-to-r from-amber-50 to-amber-100">
-                  <CardTitle className="flex items-center gap-2 text-amber-700">
-                    <Passport className="h-5 w-5" />
-                    USA VISA Types
-                  </CardTitle>
-                  <CardDescription>Comprehensive guide to US visa categories</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-6 flex-grow">
-                  <ul className="space-y-2">
-                    <li className="flex items-start gap-2">
-                      <span className="text-amber-500 mt-1">•</span>
-                      <span>Learn about different visa categories</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-amber-500 mt-1">•</span>
-                      <span>Understand eligibility requirements</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-amber-500 mt-1">•</span>
-                      <span>Compare benefits and limitations</span>
-                    </li>
-                  </ul>
-                </CardContent>
-                <CardFooter className="pt-0">
-                  <Button
-                    asChild
-                    className="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-700 hover:to-amber-600 group"
-                  >
-                    <Link href="/visa-types" className="flex items-center justify-center gap-2">
-                      Access Tool <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </Button>
-                </CardFooter>
-              </Card>
-
-              <Card className="overflow-hidden hover:shadow-xl transition-all duration-500 border-t-4 border-red-500 h-full">
-                <CardHeader className="bg-gradient-to-r from-red-50 to-red-100">
-                  <CardTitle className="flex items-center gap-2 text-red-700">
-                    <FileText className="h-5 w-5" />
-                    USA Tax Terms
-                  </CardTitle>
-                  <CardDescription>Essential tax information for recruiters and job seekers</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-6 flex-grow">
-                  <ul className="space-y-2">
-                    <li className="flex items-start gap-2">
-                      <span className="text-red-500 mt-1">•</span>
-                      <span>Compare W-2, 1099, and C2C employment types</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-red-500 mt-1">•</span>
-                      <span>View state income tax rates</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-red-500 mt-1">•</span>
-                      <span>Understand tax forms and terminology</span>
-                    </li>
-                  </ul>
-                </CardContent>
-                <CardFooter className="pt-0">
-                  <Button
-                    asChild
-                    className="w-full bg-gradient-to-r from-red-600 to-red-500 hover:from-red-700 hover:to-red-600 group"
-                  >
-                    <Link href="/tax-terms" className="flex items-center justify-center gap-2">
-                      Access Tool <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </Button>
-                </CardFooter>
-              </Card>
-
-              <Card className="overflow-hidden hover:shadow-xl transition-all duration-500 border-t-4 border-cyan-500 h-full">
-                <CardHeader className="bg-gradient-to-r from-cyan-50 to-cyan-100">
-                  <CardTitle className="flex items-center gap-2 text-cyan-700">
-                    <Plane className="h-5 w-5" />
-                    I94/Travel History
-                  </CardTitle>
-                  <CardDescription>Access and verify travel records and I-94 information</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-6 flex-grow">
-                  <ul className="space-y-2">
-                    <li className="flex items-start gap-2">
-                      <span className="text-cyan-500 mt-1">•</span>
-                      <span>Learn how to access official I-94 records</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-cyan-500 mt-1">•</span>
-                      <span>Understand the importance of travel history</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <span className="text-cyan-500 mt-1">•</span>
-                      <span>Get step-by-step guidance for verification</span>
-                    </li>
-                  </ul>
-                </CardContent>
-                <CardFooter className="pt-0">
-                  <Button
-                    asChild
-                    className="w-full bg-gradient-to-r from-cyan-600 to-cyan-500 hover:from-cyan-700 hover:to-cyan-600 group"
-                  >
-                    <Link href="/i94-history" className="flex items-center justify-center gap-2">
-                      Access Tool <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </Button>
-                </CardFooter>
-              </Card>
-            </div>
-          </div>
-        </div>
-
-        {/* Support Section */}
-        <div className="text-center py-4 border-t border-gray-200">
-          <p className="text-sm text-gray-700 mb-2">
-            <span className="font-bold">Enjoying using Recruiter Support Platform?</span>
-            <br />
-            Consider supporting us with our buymeacoffee link below! Thank You!
-          </p>
-
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button
-                variant="outline"
-                size="sm"
-                className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white border-none shadow-md hover:shadow-lg transition-all duration-300"
-              >
-                <Coffee className="h-3 w-3 mr-1" />
-                Buy me a coffee
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-md max-h-[90vh] overflow-y-auto">
-              <DialogHeader>
-                <DialogTitle className="text-center text-lg font-bold text-gray-800">Support Us</DialogTitle>
-              </DialogHeader>
-              <div className="flex flex-col items-center space-y-3 p-3">
-                {/* PhonePe QR Code Section */}
-                <div className="text-center">
-                  <p className="text-sm text-gray-600 mb-2 font-medium">Scan QR code via PhonePe</p>
-                  <div className="bg-white p-2 rounded-lg shadow-lg border">
-                    <img
-                      src="/images/phonepe-qr.jpg"
-                      alt="PhonePe QR Code for J John Francis"
-                      className="w-40 h-auto mx-auto"
-                    />
-                  </div>
-                </div>
-
-                {/* Divider */}
-                <div className="w-full border-t border-gray-200 my-2"></div>
-
-                {/* Bank Details Section */}
-                <div className="w-full">
-                  <p className="text-sm text-gray-600 mb-2 font-medium text-center">Or transfer directly to bank</p>
-                  <div className="bg-gray-50 p-3 rounded-lg border text-left space-y-1">
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs text-gray-600">Bank:</span>
-                      <span className="text-xs font-medium">Tamilnadu Mercantile Bank</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs text-gray-600">Branch:</span>
-                      <span className="text-xs font-medium">Ayapakkam Branch</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs text-gray-600">Name:</span>
-                      <span className="text-xs font-medium">John Francis J</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs text-gray-600">Account:</span>
-                      <div className="flex items-center gap-1">
-                        <span className="text-xs font-medium">370100050301187</span>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="h-4 w-4 p-0"
-                          onClick={() => copyToClipboard("370100050301187")}
-                        >
-                          <Copy className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <span className="text-xs text-gray-600">IFSC:</span>
-                      <div className="flex items-center gap-1">
-                        <span className="text-xs font-medium">TMBL0000370</span>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className="h-4 w-4 p-0"
-                          onClick={() => copyToClipboard("TMBL0000370")}
-                        >
-                          <Copy className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <p className="text-xs text-gray-500 text-center">Thank you for your support! 🙏</p>
+      {/* Content with glassmorphism effect */}
+      <div className="container mx-auto px-4 py-8 max-w-4xl relative z-10">
+        <motion.div className="space-y-8 md:space-y-12" variants={containerVariants} initial="hidden" animate="visible">
+          {/* Header with enhanced typography */}
+          <motion.div className="text-center space-y-2" variants={itemVariants}>
+            <div className="relative inline-block">
+              <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold font-display text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-white to-yellow-300 drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)] tracking-wide">
+                Joshua Matthew&apos;s
+              </h1>
+              <div className="absolute -top-6 -right-6 text-yellow-300 animate-pulse">
+                <Sparkles size={40} />
               </div>
-            </DialogContent>
-          </Dialog>
-        </div>
-      </main>
+            </div>
 
-      <Footer />
+            <div className="relative mt-4">
+              <h2 className="text-5xl sm:text-6xl md:text-8xl font-bold font-display text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 via-white to-cyan-300 drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)] tracking-wider">
+                1st Birthday!
+              </h2>
+              <div className="absolute -top-4 -left-6 text-cyan-300 animate-bounce">
+                <Cake size={40} />
+              </div>
+              <div
+                className="absolute -bottom-4 -right-6 text-pink-300 animate-bounce"
+                style={{ animationDelay: "0.5s" }}
+              >
+                <PartyPopper size={40} />
+              </div>
+            </div>
+
+            <div className="space-y-2 mt-6">
+              <p className="text-xl md:text-2xl text-white font-medium drop-shadow-md">
+                Join us for a day filled with joy, laughter, and celebration!
+              </p>
+              <p className="text-xl md:text-2xl text-yellow-300 font-bold drop-shadow-md">June 26th, 2025</p>
+            </div>
+          </motion.div>
+
+          {/* Baby Image with styled frame */}
+          <motion.div className="flex justify-center" variants={itemVariants}>
+            <div className="relative">
+              {/* Decorative frame */}
+              <div className="absolute -inset-4 bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-500 rounded-full animate-spin-slow opacity-80"></div>
+              <div className="absolute -inset-3 bg-gradient-to-r from-cyan-400 via-pink-500 to-yellow-400 rounded-full animate-reverse-spin opacity-80"></div>
+
+              {/* Image container */}
+              <div className="relative w-64 h-64 sm:w-72 sm:h-72 md:w-96 md:h-96 rounded-full overflow-hidden border-4 border-white shadow-2xl z-10">
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-pink-500/30 z-10"></div>
+                <Image
+                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/IMG_0205.JPG-21dHWbGnQVi2QzAQVehqDDlMyPQQ3q.jpeg"
+                  alt="Joshua Matthew"
+                  fill
+                  className="object-cover object-center z-0"
+                  priority
+                  style={{
+                    objectPosition: "center 20%",
+                  }}
+                />
+              </div>
+
+              {/* Decorative elements around the image */}
+              {Array.from({ length: 8 }, (_, i) => (
+                <div
+                  key={`star-${i}`}
+                  className="absolute z-20"
+                  style={{
+                    left: `${50 + 45 * Math.cos((i * Math.PI) / 4)}%`,
+                    top: `${50 + 45 * Math.sin((i * Math.PI) / 4)}%`,
+                    transform: "translate(-50%, -50%)",
+                  }}
+                >
+                  {i % 3 === 0 ? (
+                    <Star className="text-yellow-300 animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
+                  ) : i % 3 === 1 ? (
+                    <Gift className="text-cyan-300 animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
+                  ) : (
+                    <Heart className="text-pink-300 animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
+                  )}
+                </div>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Countdown Timer */}
+          <motion.div variants={itemVariants}>
+            <div className="text-center mb-6">
+              <h3 className="text-xl sm:text-2xl font-bold text-white flex items-center justify-center gap-2 drop-shadow-md">
+                <Clock className="text-yellow-300" />
+                Counting Down To The Magical Celebration
+              </h3>
+            </div>
+
+            {timeLeft.isPastEvent ? (
+              <div className="text-center p-6 bg-white/20 backdrop-blur-md rounded-2xl shadow-xl border border-white/30">
+                <h3 className="text-3xl font-bold text-white">Today is the day!</h3>
+                <p className="text-xl text-white/90 mt-2">We can&apos;t wait to celebrate with you!</p>
+              </div>
+            ) : (
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-600/40 via-pink-500/40 to-yellow-500/40 rounded-xl blur-md transform -rotate-1"></div>
+                <div className="absolute inset-0 bg-gradient-to-r from-yellow-500/30 via-pink-500/30 to-purple-600/30 rounded-xl blur-md transform rotate-1"></div>
+
+                <div className="relative bg-white/10 backdrop-blur-md rounded-xl p-4 border border-white/30 shadow-xl overflow-hidden">
+                  <div className="flex justify-center items-center space-x-1 sm:space-x-3 text-center">
+                    {[
+                      { label: "D", value: timeLeft.days },
+                      { label: "H", value: timeLeft.hours },
+                      { label: "M", value: timeLeft.minutes },
+                      { label: "S", value: timeLeft.seconds },
+                    ].map((item, index) => (
+                      <div key={item.label} className="flex items-center">
+                        <div className="flex flex-col items-center">
+                          <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-white drop-shadow-md">
+                            {String(item.value).padStart(2, "0")}
+                          </div>
+                          <div className="text-white/90 font-medium text-xs sm:text-sm">{item.label}</div>
+                        </div>
+                        {index < 3 && (
+                          <div className="text-3xl sm:text-4xl md:text-5xl font-bold text-yellow-300 mx-1 sm:mx-2">
+                            :
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="w-full h-1 bg-white/20 mt-3 rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-500 rounded-full"
+                      style={{
+                        width: `${100 - (timeLeft.seconds / 60) * 100}%`,
+                        transition: "width 1s linear",
+                      }}
+                    ></div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </motion.div>
+
+          {/* Event Details */}
+          <motion.div className="grid md:grid-cols-2 gap-6 md:gap-8" variants={itemVariants}>
+            <Card className="bg-white/20 backdrop-blur-md border-white/30 overflow-hidden relative group hover:scale-105 transition-transform duration-300">
+              <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-cyan-500/20 group-hover:opacity-80 transition-opacity"></div>
+              <CardContent className="p-4 sm:p-6 space-y-3 sm:space-y-4 relative z-10">
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <Calendar className="text-yellow-300 h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0 animate-pulse" />
+                  <div>
+                    <h3 className="text-xl sm:text-2xl font-bold text-white drop-shadow-md">Date & Time</h3>
+                    <p className="text-white/90 mt-1 text-base sm:text-lg">June 26th, 2025 at 6:30 PM</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="bg-white/20 backdrop-blur-md border-white/30 overflow-hidden relative group hover:scale-105 transition-transform duration-300">
+              <div className="absolute inset-0 bg-gradient-to-br from-pink-500/20 to-yellow-500/20 group-hover:opacity-80 transition-opacity"></div>
+              <CardContent className="p-4 sm:p-6 space-y-3 sm:space-y-4 relative z-10">
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <MapPin className="text-cyan-300 h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0 animate-pulse" />
+                  <div>
+                    <h3 className="text-xl sm:text-2xl font-bold text-white drop-shadow-md">Venue</h3>
+                    <p className="text-white/90 mt-1 text-base sm:text-lg">The Vijay Park</p>
+                    <p className="text-white/90 text-base sm:text-lg">
+                      J N Salai 12, 100 Feet Rd, Annai Sathya Nagar, Arumbakkam, Chennai, Tamil Nadu 600106
+                    </p>
+                    <Link
+                      href="https://maps.app.goo.gl/TL4M9t5iSj62iWddA"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center mt-2 sm:mt-3 text-yellow-300 hover:text-yellow-100 font-medium transition-colors"
+                    >
+                      View on Map
+                      <svg
+                        className="ml-1 w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                        />
+                      </svg>
+                    </Link>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Contact Info */}
+          <motion.div variants={itemVariants}>
+            <Card className="bg-white/20 backdrop-blur-md border-white/30 overflow-hidden relative group hover:scale-105 transition-transform duration-300">
+              <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/20 to-purple-500/20 group-hover:opacity-80 transition-opacity"></div>
+              <CardContent className="p-4 sm:p-6 relative z-10">
+                <div className="flex items-start gap-3 sm:gap-4">
+                  <Phone className="text-pink-300 h-8 w-8 sm:h-10 sm:w-10 flex-shrink-0 animate-pulse" />
+                  <div>
+                    <h3 className="text-xl sm:text-2xl font-bold text-white drop-shadow-md">For More Details</h3>
+                    <p className="text-white/90 mt-1 text-base sm:text-lg">
+                      Contact John Francis at{" "}
+                      <a
+                        href="tel:+917010749186"
+                        className="text-yellow-300 hover:text-yellow-100 font-medium transition-colors"
+                      >
+                        +91 7010749186
+                      </a>
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+
+          {/* Footer */}
+          <motion.div
+            className="text-center mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-white/20"
+            variants={itemVariants}
+          >
+            <p className="text-white/80">With love, from the Joshua&apos;s family ❤️</p>
+          </motion.div>
+        </motion.div>
+      </div>
     </div>
   )
 }
