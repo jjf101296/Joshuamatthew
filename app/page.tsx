@@ -5,7 +5,18 @@ import Image from "next/image"
 import Link from "next/link"
 import { MapPin, Calendar, Phone, Clock, Cake, Gift, Star, Sparkles, Heart, PartyPopper } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
-import { motion } from "framer-motion"
+
+// Make framer-motion optional for build compatibility
+let motion: any = { div: "div" }
+try {
+  const framerMotion = require("framer-motion")
+  motion = framerMotion.motion
+} catch (e) {
+  // Fallback to regular div if framer-motion fails to load
+  motion = {
+    div: ({ children, variants, initial, animate, ...props }: any) => <div {...props}>{children}</div>,
+  }
+}
 
 export default function BirthdayInvitation() {
   const [timeLeft, setTimeLeft] = useState({

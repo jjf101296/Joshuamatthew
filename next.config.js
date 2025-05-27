@@ -27,6 +27,8 @@ const nextConfig = {
     optimizeCss: false,
   },
   swcMinify: true,
+  output: "standalone",
+  trailingSlash: true,
 }
 
 module.exports = nextConfig
