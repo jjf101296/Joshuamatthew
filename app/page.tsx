@@ -6,18 +6,6 @@ import Link from "next/link"
 import { MapPin, Calendar, Phone, Clock, Cake, Gift, Star, Sparkles, Heart, PartyPopper } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 
-// Make framer-motion optional for build compatibility
-let motion: any = { div: "div" }
-try {
-  const framerMotion = require("framer-motion")
-  motion = framerMotion.motion
-} catch (e) {
-  // Fallback to regular div if framer-motion fails to load
-  motion = {
-    div: ({ children, variants, initial, animate, ...props }: any) => <div {...props}>{children}</div>,
-  }
-}
-
 export default function BirthdayInvitation() {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
@@ -57,27 +45,6 @@ export default function BirthdayInvitation() {
 
     return () => clearInterval(timer)
   }, [eventDate])
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.3,
-      },
-    },
-  }
-
-  const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
-    visible: {
-      y: 0,
-      opacity: 1,
-      transition: {
-        duration: 0.5,
-      },
-    },
-  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-600 via-pink-500 to-orange-400 overflow-hidden relative">
@@ -164,9 +131,9 @@ export default function BirthdayInvitation() {
 
       {/* Content with glassmorphism effect */}
       <div className="container mx-auto px-4 py-8 max-w-4xl relative z-10">
-        <motion.div className="space-y-8 md:space-y-12" variants={containerVariants} initial="hidden" animate="visible">
+        <div className="space-y-8 md:space-y-12 animate-in fade-in duration-1000">
           {/* Header with enhanced typography */}
-          <motion.div className="text-center space-y-2" variants={itemVariants}>
+          <div className="text-center space-y-2 animate-in slide-in-from-top duration-700">
             <div className="relative inline-block">
               <h1 className="text-4xl sm:text-5xl md:text-7xl font-bold font-display text-transparent bg-clip-text bg-gradient-to-r from-yellow-300 via-white to-yellow-300 drop-shadow-[0_2px_2px_rgba(0,0,0,0.5)] tracking-wide">
                 Joshua Matthew&apos;s
@@ -197,10 +164,10 @@ export default function BirthdayInvitation() {
               </p>
               <p className="text-xl md:text-2xl text-yellow-300 font-bold drop-shadow-md">June 26th, 2025</p>
             </div>
-          </motion.div>
+          </div>
 
           {/* Baby Image with styled frame */}
-          <motion.div className="flex justify-center" variants={itemVariants}>
+          <div className="flex justify-center animate-in zoom-in duration-1000 delay-300">
             <div className="relative">
               {/* Decorative frame */}
               <div className="absolute -inset-4 bg-gradient-to-r from-yellow-400 via-pink-500 to-purple-500 rounded-full animate-spin-slow opacity-80"></div>
@@ -242,10 +209,10 @@ export default function BirthdayInvitation() {
                 </div>
               ))}
             </div>
-          </motion.div>
+          </div>
 
           {/* Countdown Timer */}
-          <motion.div variants={itemVariants}>
+          <div className="animate-in slide-in-from-bottom duration-700 delay-500">
             <div className="text-center mb-6">
               <h3 className="text-xl sm:text-2xl font-bold text-white flex items-center justify-center gap-2 drop-shadow-md">
                 <Clock className="text-yellow-300" />
@@ -299,10 +266,10 @@ export default function BirthdayInvitation() {
                 </div>
               </div>
             )}
-          </motion.div>
+          </div>
 
           {/* Event Details */}
-          <motion.div className="grid md:grid-cols-2 gap-6 md:gap-8" variants={itemVariants}>
+          <div className="grid md:grid-cols-2 gap-6 md:gap-8 animate-in slide-in-from-left duration-700 delay-700">
             <Card className="bg-white/20 backdrop-blur-md border-white/30 overflow-hidden relative group hover:scale-105 transition-transform duration-300">
               <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-cyan-500/20 group-hover:opacity-80 transition-opacity"></div>
               <CardContent className="p-4 sm:p-6 space-y-3 sm:space-y-4 relative z-10">
@@ -353,10 +320,10 @@ export default function BirthdayInvitation() {
                 </div>
               </CardContent>
             </Card>
-          </motion.div>
+          </div>
 
           {/* Contact Info */}
-          <motion.div variants={itemVariants}>
+          <div className="animate-in slide-in-from-right duration-700 delay-900">
             <Card className="bg-white/20 backdrop-blur-md border-white/30 overflow-hidden relative group hover:scale-105 transition-transform duration-300">
               <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/20 to-purple-500/20 group-hover:opacity-80 transition-opacity"></div>
               <CardContent className="p-4 sm:p-6 relative z-10">
@@ -377,16 +344,13 @@ export default function BirthdayInvitation() {
                 </div>
               </CardContent>
             </Card>
-          </motion.div>
+          </div>
 
           {/* Footer */}
-          <motion.div
-            className="text-center mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-white/20"
-            variants={itemVariants}
-          >
+          <div className="text-center mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-white/20 animate-in fade-in duration-1000 delay-1000">
             <p className="text-white/80">With love, from the Joshua&apos;s family ❤️</p>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       </div>
     </div>
   )

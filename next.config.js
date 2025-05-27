@@ -10,25 +10,15 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "blob.v0.dev",
-        port: "",
-        pathname: "/**",
-      },
-      {
-        protocol: "https",
         hostname: "hebbkx1anhila5yf.public.blob.vercel-storage.com",
         port: "",
         pathname: "/**",
       },
     ],
-    unoptimized: false,
-  },
-  experimental: {
-    optimizeCss: false,
+    unoptimized: true,
   },
   swcMinify: true,
-  output: "standalone",
-  trailingSlash: true,
+  trailingSlash: false,
 }
 
 module.exports = nextConfig
